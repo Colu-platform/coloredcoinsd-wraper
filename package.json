@@ -1,0 +1,30 @@
+{
+  "name": "coloredcoinsd-wraper",
+  "version": "0.0.1",
+  "description": "coloredcoinsd api wraper",
+  "main": "src/coloredcoinsd.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Colu-platform/coloredcoinsd-wraper.git"
+  },
+  "keywords": [
+    "colored",
+    "coins",
+    "bitcoin",
+    "colu"
+  ],
+  "author": "bejavu <tal@colu.co>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Colu-platform/coloredcoinsd-wraper/issues"
+  },
+  "homepage": "https://github.com/Colu-platform/coloredcoinsd-wraper",
+  "dependencies": {
+    "bitcoinjs-lib": "^1.5.7",
+    "chai": "^3.0.0",
+    "request": "^2.58.0"
+  }
+}
