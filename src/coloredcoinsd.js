@@ -9,8 +9,6 @@ var Coloredcoinsd = function (settings) {
 	self.coloredCoinsHost = settings.coloredCoinsHost || coloredCoinsHost
 }
 
-module.exports = Coloredcoinsd
-
 Coloredcoinsd.prototype.issue = function (args, callback) {
   var self = this
 
@@ -108,3 +106,5 @@ Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
   }
   return tx.toHex()
 }
+
+module.exports = Coloredcoinsd

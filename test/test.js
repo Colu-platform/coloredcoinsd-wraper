@@ -34,6 +34,7 @@ describe('Test coloredcoinsd', function () {
 	    ],
 	  }
 		cc.issue(args, function (err, ans) {
+			if (err) console.error(err)
 			assert(!err)
 			expect(ans.txHex).to.be.a('string')
       expect(ans.txHex).to.have.length.above(0)
@@ -58,6 +59,7 @@ describe('Test coloredcoinsd', function () {
 	    ],
 	  }
 		cc.sendasset(args, function (err, ans) {
+			if (err) console.error(err)
 			assert(!err)
 			expect(ans.txHex).to.be.a('string')
       expect(ans.txHex).to.have.length.above(0)
@@ -81,6 +83,7 @@ describe('Test coloredcoinsd', function () {
 		this.timeout(5000)
 		
 		cc.addressinfo(fromAddress, function (err, ans) {
+			if (err) console.error(err)
 			assert(!err)
 			assert(ans.address == fromAddress)
       expect(ans.utxos).to.have.length.above(0)
@@ -92,6 +95,7 @@ describe('Test coloredcoinsd', function () {
 		this.timeout(5000)
 		
 		cc.stakeholders(assetId, function (err, ans) {
+			if (err) console.error(err)
 			assert(!err)
 			assert(ans.assetId == assetId)
       expect(ans.holders).to.have.length.above(0)
@@ -103,6 +107,7 @@ describe('Test coloredcoinsd', function () {
 		this.timeout(5000)
 		
 		cc.assetmetadata(assetId, utxo, function (err, ans) {
+			if (err) console.error(err)
 			assert(!err)
 			assert(ans.assetId == assetId)
 			expect(ans.issuanceTxid).to.be.a('string')
