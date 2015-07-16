@@ -1,110 +1,62 @@
 var request = require('request')
 var bitcoin = require('bitcoinjs-lib')
-
 var coloredCoinsHost = 'http://api.coloredcoins.org/v2'
 
 var Coloredcoinsd = function (settings) {
-	var self = this
-
-	self.coloredCoinsHost = settings.coloredCoinsHost || coloredCoinsHost
+  this.coloredCoinsHost = settings.coloredCoinsHost || coloredCoinsHost
 }
 
-module.exports = Coloredcoinsd
-
-Coloredcoinsd.prototype.issue = function (args, callback) {
-  var self = this
-
-  request.post(self.coloredCoinsHost + '/issue',
-    {form: args},
-    function (err, response, body) {
-    	if (err) return callback(err)
-    	if (response.statusCode != 200) return callback(body)
-    	callback(null, JSON.parse(body))
-    }
-  )
-}
-
-Coloredcoinsd.prototype.sendasset = function (args, callback) {
-  var self = this
-
-  request.post(self.coloredCoinsHost + '/sendasset',
-    {form: args},
-    function (err, response, body) {
-    	if (err) return callback(err)
-    	if (response.statusCode != 200) return callback(body)
-    	callback(null, JSON.parse(body))
-    }
-  )
-}
-
-Coloredcoinsd.prototype.broadcast = function (args, callback) {
-  var self = this
-
-  request.post(self.coloredCoinsHost + '/broadcast',
-    {form: args},
-    function (err, response, body) {
-    	if (err) return callback(err)
-    	if (response.statusCode != 200) return callback(body)
-    	callback(null, JSON.parse(body))
-    }
-  )
-}
-
-Coloredcoinsd.prototype.addressinfo = function (address, callback) {
-  var self = this
-
-  request.get(self.coloredCoinsHost + '/addressinfo/'+address,
-    function (err, response, body) {
-    	if (err) return callback(err)
-    	if (response.statusCode != 200) return callback(body)
-    	callback(null, JSON.parse(body))
-    }
-  )
-}
-
-Coloredcoinsd.prototype.stakeholders = function (assetId, numConfirmations, callback) {
-  var self = this
-
-  if (typeof numConfirmations == 'function') {
-  	callback = numConfirmations
-  	numConfirmations = 0
+var handleResponse = function (cb) {
+  return function (err, response, body) {
+    if (err) return cb(err)
+    if (response.statusCode !== 200) return cb(body)
+    cb(null, JSON.parse(body))
   }
-
-  request.get(self.coloredCoinsHost + '/stakeholders/'+assetId+'/'+numConfirmations,
-    function (err, response, body) {
-    	if (err) return callback(err)
-    	if (response.statusCode != 200) return callback(body)
-    	callback(null, JSON.parse(body))
-    }
-  )
 }
 
-Coloredcoinsd.prototype.assetmetadata = function (assetId, utxo, callback) {
-  var self = this
+Coloredcoinsd.prototype.issue = function (args, cb) {
+  request.post(this.coloredCoinsHost + '/issue', {form: args}, handleResponse(cb))
+}
 
-  if (typeof utxo == 'function') {
-  	callback = utxo
-  	utxo = 0
+Coloredcoinsd.prototype.sendasset = function (args, cb) {
+  request.post(this.coloredCoinsHost + '/sendasset', {form: args}, handleResponse(cb))
+}
+
+Coloredcoinsd.prototype.broadcast = function (args, cb) {
+  request.post(this.coloredCoinsHost + '/broadcast', {form: args}, handleResponse(cb))
+}
+
+Coloredcoinsd.prototype.addressinfo = function (address, cb) {
+  request.get(this.coloredCoinsHost + '/addressinfo/' + address, handleResponse(cb))
+}
+
+Coloredcoinsd.prototype.stakeholders = function (assetId, numConfirmations, cb) {
+  if (typeof numConfirmations === 'function') {
+    cb = numConfirmations
+    numConfirmations = 0
   }
+  request.get(this.coloredCoinsHost + '/stakeholders/' + assetId + '/' + numConfirmations, handleResponse(cb))
+}
 
-  request.get(self.coloredCoinsHost + '/assetmetadata/'+assetId+'/'+utxo,
-    function (err, response, body) {
-    	if (err) return callback(err)
-    	if (response.statusCode != 200) return callback(body)
-    	callback(null, JSON.parse(body))
-    }
-  )
+Coloredcoinsd.prototype.assetmetadata = function (assetId, utxo, cb) {
+  if (typeof utxo === 'function') {
+    cb = utxo
+    utxo = 0
+  }
+  request.get(this.coloredCoinsHost + '/assetmetadata/' + assetId + '/' + utxo, handleResponse(cb))
 }
 
 Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
   var tx = bitcoin.Transaction.fromHex(unsignedTx)
   var insLength = tx.ins.length
   for (var i = 0; i < insLength; i++) {
-  	if (Array.isArray(privateKey)) {
-  		tx.sign(i, privateKey[i])
-  	} else {
-  		tx.sign(i, privateKey)
-  	}
+    if (Array.isArray(privateKey)) {
+      tx.sign(i, privateKey[i])
+    } else {
+      tx.sign(i, privateKey)
+    }
   }
   return tx.toHex()
 }
+
+module.exports = Coloredcoinsd

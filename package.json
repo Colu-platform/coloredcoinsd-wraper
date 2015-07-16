@@ -3,8 +3,13 @@
   "version": "0.0.1",
   "description": "coloredcoinsd api wraper",
   "main": "src/coloredcoinsd.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "coverage": "istanbul cover _mocha -- -R spec",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
