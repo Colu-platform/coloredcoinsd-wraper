@@ -3,6 +3,7 @@ var bitcoin = require('bitcoinjs-lib')
 var coloredCoinsHost = 'http://api.coloredcoins.org/v2'
 
 var Coloredcoinsd = function (settings) {
+  settings = settings || {}
   this.coloredCoinsHost = settings.coloredCoinsHost || coloredCoinsHost
 }
 
