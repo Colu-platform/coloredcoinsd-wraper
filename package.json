@@ -1,6 +1,6 @@
 {
   "name": "coloredcoinsd-wraper",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "coloredcoinsd api wraper",
   "main": "src/coloredcoinsd.js",
   "directories": {
@@ -21,7 +21,16 @@
     "bitcoin",
     "colu"
   ],
-  "author": "bejavu <tal@colu.co>",
+  "contributors": [
+    {
+      "name": "Eliran Zach",
+      "email": "thehobbit85@gmail.com"
+    },
+    {
+      "name": "bejavu",
+      "email": "tal@colu.co"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Colu-platform/coloredcoinsd-wraper/issues"
