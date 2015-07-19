@@ -1,4 +1,4 @@
-var CC = require(__dirname + '/../src/coloredcoinsd.js')
+var CC = require(__dirname + '/../coloredcoinsd.js')
 var assert = require('assert')
 var expect = require('chai').expect
 var bitcoin = require('bitcoinjs-lib')
