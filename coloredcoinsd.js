@@ -49,14 +49,16 @@ Coloredcoinsd.prototype.assetmetadata = function (assetId, utxo, cb) {
 
 Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
   var tx = bitcoin.Transaction.fromHex(unsignedTx)
+  var txb = bitcoin.TransactionBuilder.fromTransaction(tx)
   var insLength = tx.ins.length
   for (var i = 0; i < insLength; i++) {
     if (Array.isArray(privateKey)) {
-      tx.sign(i, privateKey[i])
+      txb.sign(i, privateKey[i])
     } else {
-      tx.sign(i, privateKey)
+      txb.sign(i, privateKey)
     }
   }
+  tx = txb.build()
   return tx.toHex()
 }
 
