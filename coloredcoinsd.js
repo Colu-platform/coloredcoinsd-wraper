@@ -1,10 +1,21 @@
 var request = require('request')
 var bitcoin = require('bitcoinjs-lib')
-var coloredCoinsHost = 'http://api.coloredcoins.org/v2'
+
+var mainnetColoredCoinsHost = 'http://api.coloredcoins.org/v2'
+var testnetCloredCoinsHost = 'http://testnet.api.coloredcoins.org/v2'
 
 var Coloredcoinsd = function (settings) {
   settings = settings || {}
-  this.coloredCoinsHost = settings.coloredCoinsHost || coloredCoinsHost
+
+  if (settings.network == 'testnet') {
+    this.coloredCoinsHost = settings.coloredCoinsHost || testnetCloredCoinsHost
+    this.network = bitcoin.networks.testnet
+  }
+  else {
+    this.coloredCoinsHost = settings.coloredCoinsHost || mainnetColoredCoinsHost
+    this.network = bitcoin.networks.bitcoin  
+  }
+  
 }
 
 var handleResponse = function (cb) {
@@ -52,6 +63,7 @@ Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
   var txb = bitcoin.TransactionBuilder.fromTransaction(tx)
   var insLength = tx.ins.length
   for (var i = 0; i < insLength; i++) {
+    txb.inputs[i].scriptType = null
     if (Array.isArray(privateKey)) {
       txb.sign(i, privateKey[i])
     } else {
@@ -60,6 +72,19 @@ Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
   }
   tx = txb.build()
   return tx.toHex()
+}
+
+Coloredcoinsd.getInputAddresses = function (txHex, network) {
+  var network = network || bitcoin.networks.bitcoin
+  var addresses = []
+  var tx = bitcoin.Transaction.fromHex(txHex)
+  tx.ins.forEach(function (input) {
+    if (!input.script) return addresses.push(null)
+    if (bitcoin.scripts.isPubKeyHashOutput(input.script)) return addresses.push(new bitcoin.Address(input.script.chunks[2], network.pubKeyHash).toString())
+    if (bitcoin.scripts.isScriptHashOutput(input.script)) return addresses.push(new bitcoin.Address(input.script.chunks[1], network.scriptHash).toString())
+    return addresses.push(null)
+  })
+  return addresses
 }
 
 module.exports = Coloredcoinsd
