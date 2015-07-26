@@ -66,6 +66,7 @@ Coloredcoinsd.prototype.getassetdata = function (args, cb) {
   var addresses = args.addresses || null
   var numConfirmations = args.numConfirmations || 0
   var ans = {
+    assetId: assetId,
     assetAmount: 0,
     assetTotalAmount: 0,
     assetData: []
