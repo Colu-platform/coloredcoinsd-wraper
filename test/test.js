@@ -131,4 +131,22 @@ describe('Test coloredcoinsd', function () {
     done()
   })
 
+  it('Should get assetdata.', function (done) {
+    this.timeout(5000)
+
+    var args = {
+      assetId: assetId,
+      addresses: [fromAddress],
+      numConfirmations: 0
+    }
+    cc.getassetdata(args, function (err, ans) {
+      if (err) console.error(err)
+      assert(!err)
+      expect(ans).to.have.property('assetAmount')
+      expect(ans).to.have.property('assetTotalAmount')
+      expect(ans).to.have.property('assetData')
+      done()
+    })
+  })
+
 })

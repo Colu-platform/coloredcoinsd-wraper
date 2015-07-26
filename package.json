@@ -1,6 +1,6 @@
 {
   "name": "coloredcoinsd-wraper",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "coloredcoinsd api wraper",
   "main": "coloredcoinsd.js",
   "directories": {
@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/Colu-platform/coloredcoinsd-wraper",
   "dependencies": {
+    "async": "^1.4.0",
     "bitcoinjs-lib": "^1.5.7",
     "request": "^2.58.0"
   },

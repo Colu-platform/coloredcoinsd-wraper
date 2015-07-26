@@ -1,5 +1,6 @@
 var request = require('request')
 var bitcoin = require('bitcoinjs-lib')
+var async = require('async')
 
 var mainnetColoredCoinsHost = 'http://api.coloredcoins.org/v2'
 var testnetCloredCoinsHost = 'http://testnet.api.coloredcoins.org/v2'
@@ -56,6 +57,68 @@ Coloredcoinsd.prototype.assetmetadata = function (assetId, utxo, cb) {
     utxo = 0
   }
   request.get(this.coloredCoinsHost + '/assetmetadata/' + assetId + '/' + utxo, handleResponse(cb))
+}
+Coloredcoinsd.prototype.getassetdata = function (args, cb) {
+  var self = this
+
+  var assetId = args.assetId || null
+  if (assetId == null) return cb('Needs assetId')
+  var addresses = args.addresses || null
+  var numConfirmations = args.numConfirmations || 0
+  var ans = {
+    assetAmount: 0,
+    assetTotalAmount: 0,
+    assetData: []
+  }
+  var assetAddresses = []
+
+  async.waterfall([
+    function (callback) {
+       self.stakeholders(assetId, numConfirmations, callback)
+    },
+    function (holders, callback) {
+      holders.holders.forEach(function (holder) {
+        ans.assetTotalAmount+= holder.amount
+        if (!addresses || addresses.indexOf(holder.address) != -1) {
+          ans.assetAmount+=holder.amount
+          if (assetAddresses.indexOf(holder.address) == -1) {
+            assetAddresses.push(holder.address)
+          }
+        }
+      })
+      async.each(assetAddresses, function (assetAddress, callback) {
+        self.addressinfo(assetAddress, function (err, addressInfo) {
+          if (err) return callback(err)
+          async.each(addressInfo.utxos, function (utxo, callback) {
+            var txid = utxo.txid
+            var index = utxo.index
+            var utxoIndex = txid+':'+index
+            async.each(utxo.assets, function (asset, callback) {
+              if (!asset.assetId || asset.assetId != assetId) return callback()
+              self.assetmetadata(assetId, utxoIndex, function (err, meta) {
+                if (err) return callback(err)
+                var amount = 0;
+                if (asset.amount) {
+                  amount = asset.amount
+                }
+                ans.assetData.push({
+                  address: assetAddress,
+                  amount: amount,
+                  utxo: utxoIndex,
+                  metadata: meta
+                })
+                callback()
+              })
+            }, callback)
+          }, callback)
+        })
+      }, callback)
+    }
+  ],
+  function (err) {
+    if (err) return cb(err)
+    cb(null, ans)
+  })
 }
 
 Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
