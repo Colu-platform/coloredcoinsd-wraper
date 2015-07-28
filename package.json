@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/Colu-platform/coloredcoinsd-wraper",
   "dependencies": {
+    "async": "^1.4.0",
     "bitcoinjs-lib": "^1.5.7",
     "request": "^2.58.0"
   },

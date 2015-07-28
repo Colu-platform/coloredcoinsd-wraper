@@ -26,6 +26,7 @@ Coloredcoinsd.prototype.broadcastTx(args, cb)
 Coloredcoinsd.prototype.getAddressInfo(address, cb)
 Coloredcoinsd.prototype.getStakeHolders(assetId, numConfirmations, cb)
 Coloredcoinsd.prototype.getAssetMetadata(assetId, utxo, cb)
+Coloredcoinsd.prototype.getAssetData(args, cb)
 Coloredcoinsd.signTx(unsignedTx, privateKey)
 ```
 
