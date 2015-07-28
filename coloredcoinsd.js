@@ -14,23 +14,23 @@ var handleResponse = function (cb) {
   }
 }
 
-Coloredcoinsd.prototype.issue = function (args, cb) {
+Coloredcoinsd.prototype.getIssueAssetTx = function (args, cb) {
   request.post(this.coloredCoinsHost + '/issue', {form: args}, handleResponse(cb))
 }
 
-Coloredcoinsd.prototype.sendasset = function (args, cb) {
+Coloredcoinsd.prototype.getSendAssetTx = function (args, cb) {
   request.post(this.coloredCoinsHost + '/sendasset', {form: args}, handleResponse(cb))
 }
 
-Coloredcoinsd.prototype.broadcast = function (args, cb) {
+Coloredcoinsd.prototype.broadcastTx = function (args, cb) {
   request.post(this.coloredCoinsHost + '/broadcast', {form: args}, handleResponse(cb))
 }
 
-Coloredcoinsd.prototype.addressinfo = function (address, cb) {
+Coloredcoinsd.prototype.getAddressInfo = function (address, cb) {
   request.get(this.coloredCoinsHost + '/addressinfo/' + address, handleResponse(cb))
 }
 
-Coloredcoinsd.prototype.stakeholders = function (assetId, numConfirmations, cb) {
+Coloredcoinsd.prototype.getStakeHolders = function (assetId, numConfirmations, cb) {
   if (typeof numConfirmations === 'function') {
     cb = numConfirmations
     numConfirmations = 0
@@ -38,7 +38,7 @@ Coloredcoinsd.prototype.stakeholders = function (assetId, numConfirmations, cb) 
   request.get(this.coloredCoinsHost + '/stakeholders/' + assetId + '/' + numConfirmations, handleResponse(cb))
 }
 
-Coloredcoinsd.prototype.assetmetadata = function (assetId, utxo, cb) {
+Coloredcoinsd.prototype.getAssetMetadata = function (assetId, utxo, cb) {
   if (typeof utxo === 'function') {
     cb = utxo
     utxo = 0
