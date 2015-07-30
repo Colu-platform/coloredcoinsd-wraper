@@ -75,7 +75,7 @@ describe('Test coloredcoinsd', function () {
     }
     cc.broadcastTx(args, function (err, ans) {
       assert(err)
-      assert(JSON.parse(err).error === errorMsg)
+      assert(err.error === errorMsg)
       done()
     })
   })
