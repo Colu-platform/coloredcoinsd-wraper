@@ -48,7 +48,7 @@ describe('Test coloredcoinsd', function () {
   it('Should create send tx.', function (done) {
     this.timeout(15000)
     var args = {
-      from: fromAddress,
+      from: [fromAddress],
       amount: 1,
       fee: 1000,
       to: [
@@ -132,7 +132,7 @@ describe('Test coloredcoinsd', function () {
   })
 
   it('Should get assetdata.', function (done) {
-    this.timeout(5000)
+    this.timeout(10000)
 
     var args = {
       assetId: assetId,

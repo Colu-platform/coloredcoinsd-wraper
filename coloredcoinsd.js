@@ -2,8 +2,8 @@ var request = require('request')
 var bitcoin = require('bitcoinjs-lib')
 var async = require('async')
 
-var mainnetColoredCoinsHost = 'http://api.coloredcoins.org/v2'
-var testnetCloredCoinsHost = 'http://testnet.api.coloredcoins.org/v2'
+var mainnetColoredCoinsHost = 'http://api.coloredcoins.org/v3'
+var testnetCloredCoinsHost = 'http://testnet.api.coloredcoins.org/v3'
 
 var Coloredcoinsd = function (settings) {
   settings = settings || {}
