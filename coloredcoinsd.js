@@ -2,8 +2,8 @@ var request = require('request')
 var bitcoin = require('bitcoinjs-lib')
 var async = require('async')
 
-var mainnetColoredCoinsHost = 'http://api.coloredcoins.org/v2'
-var testnetCloredCoinsHost = 'http://testnet.api.coloredcoins.org/v2'
+var mainnetColoredCoinsHost = 'http://api.coloredcoins.org/v3'
+var testnetCloredCoinsHost = 'http://testnet.api.coloredcoins.org/v3'
 
 var Coloredcoinsd = function (settings) {
   settings = settings || {}
@@ -20,26 +20,29 @@ var Coloredcoinsd = function (settings) {
 var handleResponse = function (cb) {
   return function (err, response, body) {
     if (err) return cb(err)
+    if (body && typeof body === 'string') {
+      body = JSON.parse(body)
+    } else {
+      body = body || {}
+    }
     if (response.statusCode !== 200) {
-      if (body) body = JSON.parse(body)
-      else body = {}
       body.statusCode = response.statusCode
       return cb(body)
     }
-    cb(null, JSON.parse(body))
+    cb(null, body)
   }
 }
 
 Coloredcoinsd.prototype.getIssueAssetTx = function (args, cb) {
-  request.post(this.coloredCoinsHost + '/issue', {form: args}, handleResponse(cb))
+  request.post(this.coloredCoinsHost + '/issue', {json: args}, handleResponse(cb))
 }
 
 Coloredcoinsd.prototype.getSendAssetTx = function (args, cb) {
-  request.post(this.coloredCoinsHost + '/sendasset', {form: args}, handleResponse(cb))
+  request.post(this.coloredCoinsHost + '/sendasset', {json: args}, handleResponse(cb))
 }
 
 Coloredcoinsd.prototype.broadcastTx = function (args, cb) {
-  request.post(this.coloredCoinsHost + '/broadcast', {form: args}, handleResponse(cb))
+  request.post(this.coloredCoinsHost + '/broadcast', {json: args}, handleResponse(cb))
 }
 
 Coloredcoinsd.prototype.getAddressInfo = function (address, cb) {
