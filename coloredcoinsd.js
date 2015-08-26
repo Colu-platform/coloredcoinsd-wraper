@@ -21,15 +21,11 @@ var handleResponse = function (cb) {
   return function (err, response, body) {
     if (err) return cb(err)
     if (response.statusCode !== 200) {
-      if (body) {
-        body = JSON.parse(body)
-      }
-      else {
-        body = {}
-      }
-      body.statusCode = response.statusCode 
+      if (body) body = JSON.parse(body)
+      else body = {}
+      body.statusCode = response.statusCode
       return cb(body)
-    } 
+    }
     cb(null, JSON.parse(body))
   }
 }

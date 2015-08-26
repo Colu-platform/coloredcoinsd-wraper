@@ -1,5 +1,5 @@
 # coloredcoinsd-wraper
-[![Build Status](https://travis-ci.org/Colu-platform/coloredcoinsd-wraper.svg?branch=master)](https://travis-ci.org/Colu-platform/coloredcoinsd-wraper) [![Coverage Status](https://coveralls.io/repos/Colu-platform/coloredcoinsd-wraper/badge.svg?branch=master)](https://coveralls.io/r/Colu-platform/coloredcoinsd-wraper?branch=master) [![npm version](https://badge.fury.io/js/coloredcoinsd-wraper.svg)](http://badge.fury.io/js/coloredcoinsd-wraper)
+[![Build Status](https://travis-ci.org/Colu-platform/coloredcoinsd-wraper.svg?branch=master)](https://travis-ci.org/Colu-platform/coloredcoinsd-wraper) [![Coverage Status](https://coveralls.io/repos/Colu-platform/coloredcoinsd-wraper/badge.svg?branch=master)](https://coveralls.io/r/Colu-platform/coloredcoinsd-wraper?branch=master) [![npm version](https://badge.fury.io/js/coloredcoinsd-wraper.svg)](http://badge.fury.io/js/coloredcoinsd-wraper) [![npm version](http://slack.coloredcoins.org/badge.svg)](http://slack.coloredcoins.org)
 
 ### Installation
 
