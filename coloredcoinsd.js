@@ -151,6 +151,7 @@ Coloredcoinsd.getInputAddresses = function (txHex, network) {
   try {
     tx = bitcoin.Transaction.fromHex(txHex)
   } catch (err) {
+    console.error('Coloredcoinsd.getInputAddresses: ', txHex)
     console.error(err)
     return null
   }
