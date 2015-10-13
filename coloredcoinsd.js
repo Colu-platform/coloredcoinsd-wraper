@@ -147,7 +147,13 @@ Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
 Coloredcoinsd.getInputAddresses = function (txHex, network) {
   network = network || bitcoin.networks.bitcoin
   var addresses = []
-  var tx = bitcoin.Transaction.fromHex(txHex)
+  var tx
+  try {
+    tx = bitcoin.Transaction.fromHex(txHex)
+  } catch (err) {
+    console.error(err)
+    return null
+  }
   tx.ins.forEach(function (input) {
     if (!input.script) return addresses.push(null)
     if (bitcoin.scripts.isPubKeyHashOutput(input.script)) return addresses.push(new bitcoin.Address(input.script.chunks[2], network.pubKeyHash).toString())
