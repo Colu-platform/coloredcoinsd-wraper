@@ -22,14 +22,13 @@ var handleResponse = function (cb) {
     if (err) return cb(err)
     if (body && typeof body === 'string') {
       body = JSON.parse(body)
-    }
-    else {
+    } else {
       body = body || {}
     }
     if (response.statusCode !== 200) {
-      body.statusCode = response.statusCode 
+      body.statusCode = response.statusCode
       return cb(body)
-    } 
+    }
     cb(null, body)
   }
 }
@@ -149,7 +148,14 @@ Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
 Coloredcoinsd.getInputAddresses = function (txHex, network) {
   network = network || bitcoin.networks.bitcoin
   var addresses = []
-  var tx = bitcoin.Transaction.fromHex(txHex)
+  var tx
+  try {
+    tx = bitcoin.Transaction.fromHex(txHex)
+  } catch (err) {
+    console.error('Coloredcoinsd.getInputAddresses: ', txHex)
+    console.error(err)
+    return null
+  }
   tx.ins.forEach(function (input) {
     if (!input.script) return addresses.push(null)
     if (bitcoin.scripts.isPubKeyHashOutput(input.script)) return addresses.push(new bitcoin.Address(input.script.chunks[2], network.pubKeyHash).toString())
