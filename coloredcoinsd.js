@@ -65,6 +65,7 @@ Coloredcoinsd.prototype.getAssetMetadata = function (assetId, utxo, cb) {
   }
   request.get(this.coloredCoinsHost + '/assetmetadata/' + assetId + '/' + utxo, handleResponse(cb))
 }
+
 Coloredcoinsd.prototype.getAssetData = function (args, cb) {
   var self = this
 
