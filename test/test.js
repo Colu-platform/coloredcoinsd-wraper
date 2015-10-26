@@ -4,7 +4,9 @@ var expect = require('chai').expect
 var bitcoin = require('bitcoinjs-lib')
 
 describe('Test coloredcoinsd', function () {
-  var cc = new CC({network: 'testnet'})
+  var cc = new CC({
+    network: 'testnet'
+  })
 
   var fromAddress = 'mxNTyQ3WdFMQE7SGVpSQGXnSDevGMLq7dg'
   var expectedAddress = 'mm9j6Pxp2LqAqVHqj7DBit724A6P8sk5yA'
@@ -17,7 +19,7 @@ describe('Test coloredcoinsd', function () {
   var privateKey = bitcoin.ECKey.fromWIF('cQ176k8LDck5aNJTQcXd7G4rCqGM3jhJyZ7MNawyzAfaWuVpP5Xb')
 
   it('Should create issue tx.', function (done) {
-    this.timeout(5000)
+    this.timeout(60000)
     var args = {
       issueAddress: fromAddress,
       amount: 1,
@@ -35,8 +37,7 @@ describe('Test coloredcoinsd', function () {
       }
     }
     cc.getIssueAssetTx(args, function (err, ans) {
-      if (err) console.error(err)
-      assert(!err)
+      assert.ifError(err)
       expect(ans.txHex).to.be.a('string')
       expect(ans.txHex).to.have.length.above(0)
       expect(ans.assetId).to.be.a('string')
@@ -60,8 +61,7 @@ describe('Test coloredcoinsd', function () {
       ]
     }
     cc.getSendAssetTx(args, function (err, ans) {
-      if (err) console.error(err)
-      assert(!err)
+      assert.ifError(err)
       expect(ans.txHex).to.be.a('string')
       expect(ans.txHex).to.have.length.above(0)
       done()
@@ -75,6 +75,7 @@ describe('Test coloredcoinsd', function () {
     }
     cc.broadcastTx(args, function (err, ans) {
       assert(err)
+      console.log('err', err)
       assert(err.error === errorMsg)
       done()
     })
@@ -84,8 +85,7 @@ describe('Test coloredcoinsd', function () {
     this.timeout(5000)
 
     cc.getAddressInfo(fromAddress, function (err, ans) {
-      if (err) console.error(err)
-      assert(!err)
+      assert.ifError(err)
       assert(ans.address === fromAddress)
       expect(ans.utxos).to.have.length.above(0)
       done()
@@ -96,8 +96,7 @@ describe('Test coloredcoinsd', function () {
     this.timeout(5000)
 
     cc.getStakeHolders(assetId, function (err, ans) {
-      if (err) console.error(err)
-      assert(!err)
+      assert.ifError(err)
       assert(ans.assetId === assetId)
       expect(ans.holders).to.have.length.above(0)
       done()
@@ -108,8 +107,7 @@ describe('Test coloredcoinsd', function () {
     this.timeout(5000)
 
     cc.getAssetMetadata(assetId, utxo, function (err, ans) {
-      if (err) console.error(err)
-      assert(!err)
+      assert.ifError(err)
       assert(ans.assetId === assetId)
       expect(ans.issuanceTxid).to.be.a('string')
       expect(ans.issuanceTxid).to.have.length.above(0)
@@ -140,8 +138,7 @@ describe('Test coloredcoinsd', function () {
       numConfirmations: 0
     }
     cc.getAssetData(args, function (err, ans) {
-      if (err) console.error(err)
-      assert(!err)
+      assert.ifError(err)
       expect(ans).to.have.property('assetAmount')
       expect(ans).to.have.property('assetTotalAmount')
       expect(ans).to.have.property('assetData')

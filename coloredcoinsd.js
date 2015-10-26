@@ -2,17 +2,17 @@ var request = require('request')
 var bitcoin = require('bitcoinjs-lib')
 var async = require('async')
 
-var mainnetColoredCoinsHost = 'http://api.coloredcoins.org/v3'
-var testnetCloredCoinsHost = 'http://testnet.api.coloredcoins.org/v3'
+var mainnetColuHost = 'https://engine.colu.co'
+var testnetColuHost = 'https://testnet.engine.colu.co'
 
 var Coloredcoinsd = function (settings) {
   settings = settings || {}
 
   if (settings.network === 'testnet') {
-    this.coloredCoinsHost = settings.coloredCoinsHost || testnetCloredCoinsHost
+    this.coluHost = settings.coluHost || testnetColuHost
     this.network = bitcoin.networks.testnet
   } else {
-    this.coloredCoinsHost = settings.coloredCoinsHost || mainnetColoredCoinsHost
+    this.coluHost = settings.coluHost || mainnetColuHost
     this.network = bitcoin.networks.bitcoin
   }
 }
@@ -34,19 +34,31 @@ var handleResponse = function (cb) {
 }
 
 Coloredcoinsd.prototype.getIssueAssetTx = function (args, cb) {
-  request.post(this.coloredCoinsHost + '/issue', {json: args}, handleResponse(cb))
+  var params = {
+    func: 'issue',
+    params: args
+  }
+  request.post(this.coluHost + '/coloredcoins', {json: params}, handleResponse(cb))
 }
 
 Coloredcoinsd.prototype.getSendAssetTx = function (args, cb) {
-  request.post(this.coloredCoinsHost + '/sendasset', {json: args}, handleResponse(cb))
+  var params = {
+    func: 'sendasset',
+    params: args
+  }
+  request.post(this.coluHost + '/coloredcoins', {json: params}, handleResponse(cb))
 }
 
 Coloredcoinsd.prototype.broadcastTx = function (args, cb) {
-  request.post(this.coloredCoinsHost + '/broadcast', {json: args}, handleResponse(cb))
+  var params = {
+    func: 'broadcast',
+    params: args
+  }
+  request.post(this.coluHost + '/coloredcoins', {json: params}, handleResponse(cb))
 }
 
 Coloredcoinsd.prototype.getAddressInfo = function (address, cb) {
-  request.get(this.coloredCoinsHost + '/addressinfo/' + address, handleResponse(cb))
+  request.get(this.coluHost + '/coloredcoins?func=addressinfo&address=' + address, handleResponse(cb))
 }
 
 Coloredcoinsd.prototype.getStakeHolders = function (assetId, numConfirmations, cb) {
@@ -54,7 +66,7 @@ Coloredcoinsd.prototype.getStakeHolders = function (assetId, numConfirmations, c
     cb = numConfirmations
     numConfirmations = 0
   }
-  request.get(this.coloredCoinsHost + '/stakeholders/' + assetId + '/' + numConfirmations, handleResponse(cb))
+  request.get(this.coluHost + '/coloredcoins?func=stakeholders&assetId=' + assetId + '&numConfirmations=' + numConfirmations, handleResponse(cb))
 }
 
 Coloredcoinsd.prototype.getAssetMetadata = function (assetId, utxo, cb) {
@@ -62,7 +74,7 @@ Coloredcoinsd.prototype.getAssetMetadata = function (assetId, utxo, cb) {
     cb = utxo
     utxo = 0
   }
-  request.get(this.coloredCoinsHost + '/assetmetadata/' + assetId + '/' + utxo, handleResponse(cb))
+  request.get(this.coluHost + '/coloredcoins?func=assetmetadata&assetId=' + assetId + '&utxo=' + utxo, handleResponse(cb))
 }
 
 Coloredcoinsd.prototype.getAssetData = function (args, cb) {
