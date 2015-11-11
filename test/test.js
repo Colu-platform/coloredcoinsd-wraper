@@ -47,7 +47,7 @@ describe('Test coloredcoinsd', function () {
   })
 
   it('Should create send tx.', function (done) {
-    this.timeout(15000)
+    this.timeout(60000)
     var args = {
       from: [fromAddress],
       amount: 1,
@@ -69,7 +69,7 @@ describe('Test coloredcoinsd', function () {
   })
 
   it('Should broadcast a tx.', function (done) {
-    this.timeout(5000)
+    this.timeout(15000)
     var args = {
       txHex: expectedsigntx
     }
@@ -82,7 +82,7 @@ describe('Test coloredcoinsd', function () {
   })
 
   it('Should get address info.', function (done) {
-    this.timeout(5000)
+    this.timeout(60000)
 
     cc.getAddressInfo(fromAddress, function (err, ans) {
       assert.ifError(err)
@@ -93,7 +93,7 @@ describe('Test coloredcoinsd', function () {
   })
 
   it('Should get stakeholders.', function (done) {
-    this.timeout(5000)
+    this.timeout(60000)
 
     cc.getStakeHolders(assetId, function (err, ans) {
       assert.ifError(err)
@@ -104,7 +104,7 @@ describe('Test coloredcoinsd', function () {
   })
 
   it('Should get assetmetadata.', function (done) {
-    this.timeout(5000)
+    this.timeout(60000)
 
     cc.getAssetMetadata(assetId, utxo, function (err, ans) {
       assert.ifError(err)
@@ -130,7 +130,7 @@ describe('Test coloredcoinsd', function () {
   })
 
   it('Should get assetdata.', function (done) {
-    this.timeout(10000)
+    this.timeout(60000)
 
     var args = {
       assetId: assetId,
