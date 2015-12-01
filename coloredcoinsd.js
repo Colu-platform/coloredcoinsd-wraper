@@ -141,6 +141,18 @@ Coloredcoinsd.prototype.getAssetData = function (args, cb) {
   })
 }
 
+Coloredcoinsd.prototype.verifyIssuer = function (assetId, json, cb) {
+  if (typeof json === 'function') {
+    cb = json
+    json = null
+  }
+  var params = {
+    asset_id: assetId,
+    json: json
+  }
+  request.post(this.coluHost + '/verify_issuer', {json: params}, handleResponse(cb))
+}
+
 Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
   var tx = bitcoin.Transaction.fromHex(unsignedTx)
   var txb = bitcoin.TransactionBuilder.fromTransaction(tx)
