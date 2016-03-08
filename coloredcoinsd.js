@@ -169,6 +169,8 @@ Coloredcoinsd.signTx = function (unsignedTx, privateKey) {
   return tx.toHex()
 }
 
+Coloredcoinsd.prototype.signTx = Coloredcoinsd.signTx
+
 Coloredcoinsd.getInputAddresses = function (txHex, network) {
   network = network || bitcoin.networks.bitcoin
   var addresses = []
