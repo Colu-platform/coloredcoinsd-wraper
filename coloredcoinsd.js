@@ -3,7 +3,7 @@ var bitcoin = require('bitcoinjs-lib')
 var async = require('async')
 
 var mainnetColuHost = 'https://engine.colu.co'
-var testnetColuHost = 'https://testnet.engine.colu.co'
+var testnetColuHost = 'https://testnet-engine.colu.co'
 
 var Coloredcoinsd = function (settings) {
   settings = settings || {}
