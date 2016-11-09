@@ -98,7 +98,6 @@ Coloredcoinsd.prototype.getAssetData = function (args, cb) {
     },
     function (holders, callback) {
       holders.holders.forEach(function (holder) {
-        ans.assetTotalAmount += holder.amount
         if (!addresses || addresses.indexOf(holder.address) !== -1) {
           ans.assetAmount += holder.amount
           if (assetAddresses.indexOf(holder.address) === -1) {
@@ -137,6 +136,7 @@ Coloredcoinsd.prototype.getAssetData = function (args, cb) {
   ],
   function (err) {
     if (err) return cb(err)
+    ans.assetTotalAmount = (ans.assetData[0] && ans.assetData[0].metadata && ans.assetData[0].metadata.totalSupply) || 0
     cb(null, ans)
   })
 }
